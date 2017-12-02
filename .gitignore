@@ -1,0 +1,10 @@
+/.vs/
+/Debug/
+*/*.user
+*/Debug/
+/Release/
+*/Release/
+*/bin/
+*/obj/
+/packages/
+*/packages/
