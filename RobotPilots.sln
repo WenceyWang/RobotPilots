@@ -11,15 +11,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RobotPilots.Visual", "Robot
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RobotPilots.Visual.Linux", "RobotPilots.Visual.Linux\RobotPilots.Visual.Linux.vcxproj", "{D9A5C570-B846-4E25-9D21-BB24B6B983EE}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "RobotPilots.Vision.Managed", "RobotPilots.Vision.Managed\RobotPilots.Vision.Managed.shproj", "{3544956D-CC9D-46A1-8B02-8035B475551A}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RobotPilots.Visual.Windows", "RobotPilots.Visual.Windows\RobotPilots.Visual.Windows.vcxproj", "{B70A0EE2-7E86-4EC3-9FDE-4BDA810760C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobotPilots.Vision.Managed", "RobotPilots.Vision.Managed\RobotPilots.Vision.Managed.csproj", "{819693B1-32DC-4D6A-8A94-52B4C8860F23}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		RobotPilots.Vision.Managed\RobotPilots.Vision.Managed.projitems*{3544956d-cc9d-46a1-8b02-8035b475551a}*SharedItemsImports = 13
 		RobotPilots.Visual\RobotPilots.Visual.vcxitems*{5b7e70c8-ff71-402c-b442-8e69d6dffd90}*SharedItemsImports = 9
-		RobotPilots.Vision.Managed\RobotPilots.Vision.Managed.projitems*{a81d7cf8-2acd-4578-af40-8ecc7920e89a}*SharedItemsImports = 4
 		RobotPilots.Visual\RobotPilots.Visual.vcxitems*{b70a0ee2-7e86-4ec3-9fde-4bda810760c0}*SharedItemsImports = 4
 		RobotPilots.Visual\RobotPilots.Visual.vcxitems*{d9a5c570-b846-4e25-9d21-bb24b6b983ee}*SharedItemsImports = 4
 	EndGlobalSection
@@ -92,6 +90,22 @@ Global
 		{B70A0EE2-7E86-4EC3-9FDE-4BDA810760C0}.Release|x64.Build.0 = Release|x64
 		{B70A0EE2-7E86-4EC3-9FDE-4BDA810760C0}.Release|x86.ActiveCfg = Release|Win32
 		{B70A0EE2-7E86-4EC3-9FDE-4BDA810760C0}.Release|x86.Build.0 = Release|Win32
+		{819693B1-32DC-4D6A-8A94-52B4C8860F23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{819693B1-32DC-4D6A-8A94-52B4C8860F23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{819693B1-32DC-4D6A-8A94-52B4C8860F23}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{819693B1-32DC-4D6A-8A94-52B4C8860F23}.Debug|ARM.Build.0 = Debug|Any CPU
+		{819693B1-32DC-4D6A-8A94-52B4C8860F23}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{819693B1-32DC-4D6A-8A94-52B4C8860F23}.Debug|x64.Build.0 = Debug|Any CPU
+		{819693B1-32DC-4D6A-8A94-52B4C8860F23}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{819693B1-32DC-4D6A-8A94-52B4C8860F23}.Debug|x86.Build.0 = Debug|Any CPU
+		{819693B1-32DC-4D6A-8A94-52B4C8860F23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{819693B1-32DC-4D6A-8A94-52B4C8860F23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{819693B1-32DC-4D6A-8A94-52B4C8860F23}.Release|ARM.ActiveCfg = Release|Any CPU
+		{819693B1-32DC-4D6A-8A94-52B4C8860F23}.Release|ARM.Build.0 = Release|Any CPU
+		{819693B1-32DC-4D6A-8A94-52B4C8860F23}.Release|x64.ActiveCfg = Release|Any CPU
+		{819693B1-32DC-4D6A-8A94-52B4C8860F23}.Release|x64.Build.0 = Release|Any CPU
+		{819693B1-32DC-4D6A-8A94-52B4C8860F23}.Release|x86.ActiveCfg = Release|Any CPU
+		{819693B1-32DC-4D6A-8A94-52B4C8860F23}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

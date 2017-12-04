@@ -15,7 +15,10 @@ namespace RobotPilots . Vision . Managed
 
 		public double Degree { get ; }
 
+		public float FloatDegree => Convert . ToSingle ( ( int ) ( Degree % 360 ) ) ;
+
 		public bool Equals ( Angle other ) { return Degree . Equals ( other . Degree ) ; }
+
 
 		public override bool Equals ( object obj )
 		{

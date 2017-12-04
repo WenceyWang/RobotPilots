@@ -13,6 +13,8 @@
     <PackageReference Include="SerialPortStreamCore" Version="2.1.0" />
   </ItemGroup>
 
-  <Import Project="..\RobotPilots.Vision.Managed\RobotPilots.Vision.Managed.projitems" Label="Shared" />
+  <ItemGroup>
+    <ProjectReference Include="..\RobotPilots.Vision.Managed\RobotPilots.Vision.Managed.csproj" />
+  </ItemGroup>
 
 </Project>

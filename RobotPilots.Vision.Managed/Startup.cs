@@ -14,7 +14,7 @@ namespace RobotPilots . Vision . Managed
 		public static Task RunAllTask ( )
 		{
 			List <Task> tasks = new List <Task> ( ) ;
-			foreach ( TypeInfo type in typeof ( Program ) . GetTypeInfo ( ) . Assembly . DefinedTypes )
+			foreach ( TypeInfo type in typeof ( Application ) . GetTypeInfo ( ) . Assembly . DefinedTypes )
 			{
 				foreach ( MethodInfo method in type . DeclaredMethods )
 				{

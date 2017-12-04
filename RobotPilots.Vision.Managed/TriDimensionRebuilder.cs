@@ -7,6 +7,8 @@ using JetBrains . Annotations ;
 
 using OpenCvSharp ;
 
+using RobotPilots . Vision . Managed . Visual ;
+
 namespace RobotPilots . Vision . Managed
 {
 

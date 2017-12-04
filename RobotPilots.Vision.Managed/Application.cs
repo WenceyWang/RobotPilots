@@ -5,14 +5,17 @@ using System . Linq ;
 
 using OpenCvSharp ;
 
+using RobotPilots . Vision . Managed . Visual ;
+
 namespace RobotPilots . Vision . Managed
 {
 
-	public class Program
+	public class Application
 	{
 
-		public static Program Current { get ; private set ; }
+		public static Application Current { get ; private set ; }
 
+		public Application ( ) { Current = this ; }
 
 		public void Run ( )
 		{
@@ -64,22 +67,6 @@ namespace RobotPilots . Vision . Managed
 				//{
 
 				//}
-			}
-		}
-
-
-		public static void Main ( string [ ] args )
-		{
-			Startup . RunAllTask ( ) . Wait ( ) ;
-			try
-			{
-				Current = new Program ( ) ;
-
-				Current . Run ( ) ;
-			}
-			catch ( Exception e )
-			{
-				Console . WriteLine ( e ) ;
 			}
 		}
 

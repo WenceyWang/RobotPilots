@@ -5,7 +5,7 @@ using System . Linq ;
 
 using OpenCvSharp ;
 
-namespace RobotPilots . Vision . Managed
+namespace RobotPilots . Vision . Managed . Visual
 {
 
 	public interface ICamera
