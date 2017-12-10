@@ -8,6 +8,8 @@ using JetBrains . Annotations ;
 
 using OpenCvSharp ;
 
+using RobotPilots . Vision . Managed . Utility ;
+
 namespace RobotPilots . Vision . Managed . Visual
 {
 
@@ -18,7 +20,7 @@ namespace RobotPilots . Vision . Managed . Visual
 
 		public abstract List <Point2f> Detcet ( Mat frame ) ;
 
-		[Startup]
+		[Startup . StartupAttribute]
 		public void LoadDetector ( )
 		{
 			lock ( Locker )

@@ -3,9 +3,14 @@ using System . Collections ;
 using System . Collections . Generic ;
 using System . Linq ;
 
-namespace RobotPilots . Vision . Managed
+using JetBrains . Annotations ;
+
+using RobotPilots . Vision . Managed . Math ;
+
+namespace RobotPilots . Vision . Managed . Control
 {
 
+	[PublicAPI]
 	public abstract class CradleHead
 	{
 
@@ -14,6 +19,8 @@ namespace RobotPilots . Vision . Managed
 		public AnglePosition MoveTarget { get ; set ; }
 
 		public abstract TimeSpan ExpectedMoveTime ( AnglePosition target ) ;
+
+		//public 
 
 	}
 

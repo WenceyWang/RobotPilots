@@ -3,7 +3,7 @@ using System . Collections ;
 using System . Collections . Generic ;
 using System . Linq ;
 
-namespace RobotPilots . Vision . Managed
+namespace RobotPilots . Vision . Managed . Math
 {
 
 	public struct Angle : IEquatable <Angle>
@@ -36,7 +36,7 @@ namespace RobotPilots . Vision . Managed
 
 		public static bool operator != ( Angle left , Angle right ) { return ! left . Equals ( right ) ; }
 
-		public double Radius => Degree / 180 * Math . PI ;
+		public double Radius => Degree / 180 * System . Math . PI ;
 
 		public Angle ( double degree ) { Degree = degree ; }
 
@@ -55,14 +55,14 @@ namespace RobotPilots . Vision . Managed
 			}
 			else
 			{
-				return new Angle ( Convert . ToDouble ( value ) / Math . PI * 180 ) ;
+				return new Angle ( Convert . ToDouble ( value ) / System . Math . PI * 180 ) ;
 			}
 		}
 
 
 		public static Angle FromDegree ( double degree ) { return new Angle ( degree ) ; }
 
-		public static Angle FromRedius ( double radius ) { return new Angle ( radius / Math . PI * 180 ) ; }
+		public static Angle FromRedius ( double radius ) { return new Angle ( radius / System . Math . PI * 180 ) ; }
 
 		public static Angle FromGrad ( double grad ) { return new Angle ( grad / 10 * 9 ) ; }
 

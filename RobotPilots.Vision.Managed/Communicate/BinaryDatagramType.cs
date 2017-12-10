@@ -9,11 +9,27 @@ namespace RobotPilots . Vision . Managed . Communicate
 	public enum BinaryDatagramType : byte
 	{
 
-		TargetPosition ,
+		//Send Package 0-127,
 
-		TargetAngle ,
+		TargetPosition = 0 ,
 
-		TargetDeltaAngle
+		TargetAngle = 1 ,
+
+		TargetDeltaAngle = 2 ,
+
+		//Receive Package 128-255
+
+		CradleHeadPosition = 128 ,
+
+		CradleHeadVelocity = 129 ,
+
+		//Chassis
+
+		FrictionWheelVelocity = 130
+
+		//todo:Chassis speed
+
+		//todo: how many bullet remain
 
 	}
 

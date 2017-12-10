@@ -5,7 +5,7 @@ using System . Linq ;
 using System . Reflection ;
 using System . Threading . Tasks ;
 
-namespace RobotPilots . Vision . Managed
+namespace RobotPilots . Vision . Managed . Utility
 {
 
 	public static class Startup
@@ -26,6 +26,15 @@ namespace RobotPilots . Vision . Managed
 			}
 
 			return Task . WhenAll ( tasks ) ;
+		}
+
+		/// <summary>
+		///     Point out any method should be called before using this lib
+		/// </summary>
+		[AttributeUsage ( AttributeTargets . Method , Inherited = false )]
+		public sealed class StartupAttribute : Attribute
+		{
+
 		}
 
 	}

@@ -12,56 +12,12 @@ using JetBrains . Annotations ;
 namespace RobotPilots . Vision . Managed . Communicate
 {
 
-	public static class Crc8
-	{
-
-		static Crc8 ( )
-		{
-			for ( int i = 0 ; i < 256 ; ++i )
-			{
-				int temp = i ;
-				for ( int j = 0 ; j < 8 ; ++j )
-				{
-					if ( ( temp & 0x80 ) != 0 )
-					{
-						temp = ( temp << 1 ) ^ Poly ;
-					}
-					else
-					{
-						temp <<= 1 ;
-					}
-				}
-
-				Table [ i ] = ( byte ) temp ;
-			}
-		}
-
-		// x8 + x7 + x6 + x4 + x2 + 1
-		private const byte Poly = 0xd5 ;
-
-		private static readonly byte [ ] Table = new byte[ 256 ] ;
-
-		public static byte CaluCrc8 ( this byte [ ] data ) { return ComputeChecksum ( data ) ; }
-
-		public static byte ComputeChecksum ( params byte [ ] data )
-		{
-			byte crc = 0 ;
-			if ( data != null &&
-				data . Length > 0 )
-			{
-				foreach ( byte b in data )
-				{
-					crc = Table [ crc ^ b ] ;
-				}
-			}
-
-			return crc ;
-		}
-
-	}
-
+	[PublicAPI]
 	public class TrafficManager
 	{
+
+		public static TrafficManager Current { get ; }
+
 
 		public ConcurrentQueue <SendDatagram> SendQueue { get ; } = new ConcurrentQueue <SendDatagram> ( ) ;
 
@@ -92,48 +48,62 @@ namespace RobotPilots . Vision . Managed . Communicate
 
 		public const byte PackageHeaderInt = 0xAA ;
 
+		public void Stop ( )
+		{
+			lock ( this )
+			{
+				if ( IsRunning )
+				{
+					IsRunning = false ;
+				}
+			}
+		}
+
 		public void Run ( )
 		{
 			lock ( this )
 			{
-				switch ( ReceiveMode )
+				if ( ! IsRunning )
 				{
-					case SerializationMode . Xml :
+					switch ( ReceiveMode )
 					{
-						ListenThread = new Thread ( XmlListenTask ) ;
-						break ;
+						case SerializationMode . Xml :
+						{
+							ListenThread = new Thread ( XmlListenTask ) ;
+							break ;
+						}
+						case SerializationMode . Binary :
+						{
+							break ;
+						}
+						default :
+						{
+							throw new ArgumentOutOfRangeException ( ) ;
+						}
 					}
-					case SerializationMode . Binary :
+
+					switch ( SendMode )
 					{
-						break ;
+						case SerializationMode . Xml :
+						{
+							SendThread = new Thread ( XmlSendTask ) ;
+							break ;
+						}
+						case SerializationMode . Binary :
+						{
+							break ;
+						}
+						default :
+						{
+							throw new ArgumentOutOfRangeException ( ) ;
+						}
 					}
-					default :
-					{
-						throw new ArgumentOutOfRangeException ( ) ;
-					}
+
+					ListenThread . Start ( ) ;
+					SendThread . Start ( ) ;
+
+					IsRunning = true ;
 				}
-
-				switch ( SendMode )
-				{
-					case SerializationMode . Xml :
-					{
-						SendThread = new Thread ( XmlSendTask ) ;
-						break ;
-					}
-					case SerializationMode . Binary :
-					{
-						break ;
-					}
-					default :
-					{
-						throw new ArgumentOutOfRangeException ( ) ;
-					}
-				}
-
-				ListenThread . Start ( ) ;
-				SendThread . Start ( ) ;
-
-				IsRunning = true ;
 			}
 		}
 
@@ -144,7 +114,7 @@ namespace RobotPilots . Vision . Managed . Communicate
 		{
 			StreamReader reader = new StreamReader ( UnderlyingStream ) ;
 
-			while ( true )
+			while ( IsRunning )
 			{
 				string package = reader . ReadLine ( ) ;
 
@@ -159,7 +129,7 @@ namespace RobotPilots . Vision . Managed . Communicate
 
 		public void BinaryListenTask ( )
 		{
-			while ( true )
+			while ( IsRunning )
 			{
 				if ( UnderlyingStream . ReadByte ( ) == PackageHeaderInt )
 				{
@@ -185,7 +155,7 @@ namespace RobotPilots . Vision . Managed . Communicate
 		public void BinarySendTask ( )
 		{
 			byte sequence = 0 ;
-			while ( true )
+			while ( IsRunning )
 			{
 				if ( SendQueue . TryDequeue ( out SendDatagram datagram ) )
 				{
@@ -209,7 +179,7 @@ namespace RobotPilots . Vision . Managed . Communicate
 		{
 			StreamWriter writer = new StreamWriter ( UnderlyingStream ) ;
 
-			while ( true )
+			while ( IsRunning )
 			{
 				if ( SendQueue . TryDequeue ( out SendDatagram datagram ) )
 				{
@@ -221,15 +191,6 @@ namespace RobotPilots . Vision . Managed . Communicate
 				}
 			}
 		}
-
-	}
-
-	public enum SerializationMode
-	{
-
-		Xml ,
-
-		Binary
 
 	}
 

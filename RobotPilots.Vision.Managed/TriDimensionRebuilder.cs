@@ -7,31 +7,44 @@ using JetBrains . Annotations ;
 
 using OpenCvSharp ;
 
+using RobotPilots . Vision . Managed . Utility ;
 using RobotPilots . Vision . Managed . Visual ;
 
 namespace RobotPilots . Vision . Managed
 {
 
-	public abstract class TriDimensionRebuilder : NeedRegisBase <TriDimensionRebuilderType ,
-		TriDimensionRebuilderAttreibute , TriDimensionRebuilder>
+	public abstract class TriDimensionRebuilder : NeedRegisBase <TriDimensionRebuilder . TriDimensionRebuilderType ,
+		TriDimensionRebuilder . TriDimensionRebuilderAttribute , TriDimensionRebuilder>
 	{
 
 		public abstract Point3f Transform ( Point2f imagePoint , CameraPosition cameraPosition ) ;
 
+		public class TriDimensionRebuilderAttribute : NeedRegisAttributeBase
+		{
+
+		}
+
+		public class TriDimensionRebuilderType : RegisType <TriDimensionRebuilderType , TriDimensionRebuilderAttribute ,
+			TriDimensionRebuilder>
+		{
+
+			public TriDimensionRebuilderType ( [NotNull] Type entryType ) : base ( entryType ) { }
+
+		}
+
 	}
 
-	//public abstract class
-
-	public class TriDimensionRebuilderAttreibute : NeedRegisAttributeBase
+	[TriDimensionRebuilder]
+	public class BinocularTriDimensionRebuilder : TriDimensionRebuilder
 	{
 
-	}
+		public BinocularCamera Camera { get ; set ; }
 
-	public class TriDimensionRebuilderType : RegisType <TriDimensionRebuilderType , TriDimensionRebuilderAttreibute ,
-		TriDimensionRebuilder>
-	{
-
-		public TriDimensionRebuilderType ( [NotNull] Type entryType ) : base ( entryType ) { }
+		public override Point3f Transform ( Point2f imagePoint , CameraPosition cameraPosition )
+		{
+			//Camera.
+			return default ( Point3f ) ;
+		}
 
 	}
 

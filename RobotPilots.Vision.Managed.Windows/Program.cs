@@ -3,6 +3,8 @@ using System . Collections ;
 using System . Collections . Generic ;
 using System . Linq ;
 
+using RobotPilots . Vision . Managed . Utility ;
+
 namespace RobotPilots . Vision . Managed . Windows
 {
 

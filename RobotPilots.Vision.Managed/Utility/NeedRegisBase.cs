@@ -8,7 +8,7 @@ using System . Xml . Linq ;
 
 using JetBrains . Annotations ;
 
-namespace RobotPilots . Vision . Managed
+namespace RobotPilots . Vision . Managed . Utility
 {
 
 	public abstract class NeedRegisBase : IEquatable <NeedRegisBase>
@@ -42,6 +42,7 @@ namespace RobotPilots . Vision . Managed
 		}
 
 		public override string ToString ( ) { return $"{Type . Name} with {Guid}" ; }
+
 
 		protected static NeedRegisBase Create ( ObjectType type , params object [ ] arguments )
 		{
@@ -157,12 +158,18 @@ namespace RobotPilots . Vision . Managed
 			}
 		}
 
+		[AttributeUsage ( AttributeTargets . Class )]
+		public abstract class NeedRegisAttributeBase : Attribute
+		{
+
+		}
+
 	}
 
 
 	public abstract class NeedRegisBase <TType , TAttribute , T> : NeedRegisBase
 		where TType : RegisType <TType , TAttribute , T>
-		where TAttribute : NeedRegisAttributeBase
+		where TAttribute : NeedRegisBase . NeedRegisAttributeBase
 		where T : NeedRegisBase <TType , TAttribute , T>
 	{
 

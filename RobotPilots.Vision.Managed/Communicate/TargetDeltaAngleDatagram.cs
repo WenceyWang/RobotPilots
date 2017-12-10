@@ -4,9 +4,14 @@ using System . Collections . Generic ;
 using System . Linq ;
 using System . Xml . Linq ;
 
+using JetBrains . Annotations ;
+
+using RobotPilots . Vision . Managed . Math ;
+
 namespace RobotPilots . Vision . Managed . Communicate
 {
 
+	[PublicAPI]
 	[Datagram ( nameof(BinaryDatagramType . TargetDeltaAngle) , BinaryDatagramType . TargetDeltaAngle )]
 	public class TargetDeltaAngleDatagram : SendDatagram
 	{
@@ -19,7 +24,7 @@ namespace RobotPilots . Vision . Managed . Communicate
 		{
 			XElement result = base . ToXElement ( ) ;
 
-			result . SetAttributeValue ( nameof(Position . XPitch) , Position . XPitch . FloatDegree ) ;
+			result . SetAttributeValue ( nameof(Position . XYaw) , Position . XYaw . FloatDegree ) ;
 			result . SetAttributeValue ( nameof(Position . YPitch) , Position . YPitch . FloatDegree ) ;
 
 			return result ;
@@ -29,7 +34,7 @@ namespace RobotPilots . Vision . Managed . Communicate
 		{
 			List <byte> byties = new List <byte> ( 8 ) ;
 
-			byties . AddRange ( BitConverter . GetBytes ( Position . XPitch . FloatDegree ) ) ;
+			byties . AddRange ( BitConverter . GetBytes ( Position . XYaw . FloatDegree ) ) ;
 			byties . AddRange ( BitConverter . GetBytes ( Position . YPitch . FloatDegree ) ) ;
 
 			return byties . ToArray ( ) ;

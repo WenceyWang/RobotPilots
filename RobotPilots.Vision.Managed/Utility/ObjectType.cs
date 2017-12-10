@@ -6,7 +6,7 @@ using System . Reflection ;
 
 using JetBrains . Annotations ;
 
-namespace RobotPilots . Vision . Managed
+namespace RobotPilots . Vision . Managed . Utility
 {
 
 	public class ObjectType

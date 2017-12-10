@@ -10,11 +10,15 @@ namespace RobotPilots . Vision . Managed . Communicate
 	public abstract class ReceiveDatagram : Datagram
 	{
 
-		public XElement Source { get ; }
+		public XElement XmlSource { get ; }
 
-		protected ReceiveDatagram ( XElement source ) { Source = source ; }
+		public byte [ ] BinarySource { get ; }
 
-		public sealed override XElement ToXElement ( ) { return Source ; }
+		protected ReceiveDatagram ( XElement xmlSource ) { XmlSource = xmlSource ; }
+
+		protected ReceiveDatagram ( byte [ ] binarySource ) { BinarySource = binarySource ; }
+
+		public sealed override XElement ToXElement ( ) { return XmlSource ; }
 
 	}
 

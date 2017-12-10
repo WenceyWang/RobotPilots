@@ -4,12 +4,15 @@ using System . Collections . Generic ;
 using System . Linq ;
 using System . Xml . Linq ;
 
+using JetBrains . Annotations ;
+
 using OpenCvSharp ;
 
 namespace RobotPilots . Vision . Managed . Communicate
 {
 
-	[Datagram ( "TargetPosition" , BinaryDatagramType . TargetPosition )]
+	[PublicAPI]
+	[Datagram ( nameof(BinaryDatagramType . TargetPosition) , BinaryDatagramType . TargetPosition )]
 	public class TargetPositionDatagram : SendDatagram
 	{
 

@@ -13,7 +13,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RobotPilots.Visual.Linux", 
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RobotPilots.Visual.Windows", "RobotPilots.Visual.Windows\RobotPilots.Visual.Windows.vcxproj", "{B70A0EE2-7E86-4EC3-9FDE-4BDA810760C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobotPilots.Vision.Managed", "RobotPilots.Vision.Managed\RobotPilots.Vision.Managed.csproj", "{819693B1-32DC-4D6A-8A94-52B4C8860F23}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RobotPilots.Vision.Managed", "RobotPilots.Vision.Managed\RobotPilots.Vision.Managed.csproj", "{819693B1-32DC-4D6A-8A94-52B4C8860F23}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobotPilots.Vision.Managed.Tests", "RobotPilots.Vision.Managed.Tests\RobotPilots.Vision.Managed.Tests.csproj", "{EB96B7E1-F496-4926-B8BD-66E841CB9322}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -106,6 +108,22 @@ Global
 		{819693B1-32DC-4D6A-8A94-52B4C8860F23}.Release|x64.Build.0 = Release|Any CPU
 		{819693B1-32DC-4D6A-8A94-52B4C8860F23}.Release|x86.ActiveCfg = Release|Any CPU
 		{819693B1-32DC-4D6A-8A94-52B4C8860F23}.Release|x86.Build.0 = Release|Any CPU
+		{EB96B7E1-F496-4926-B8BD-66E841CB9322}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB96B7E1-F496-4926-B8BD-66E841CB9322}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB96B7E1-F496-4926-B8BD-66E841CB9322}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{EB96B7E1-F496-4926-B8BD-66E841CB9322}.Debug|ARM.Build.0 = Debug|Any CPU
+		{EB96B7E1-F496-4926-B8BD-66E841CB9322}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EB96B7E1-F496-4926-B8BD-66E841CB9322}.Debug|x64.Build.0 = Debug|Any CPU
+		{EB96B7E1-F496-4926-B8BD-66E841CB9322}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EB96B7E1-F496-4926-B8BD-66E841CB9322}.Debug|x86.Build.0 = Debug|Any CPU
+		{EB96B7E1-F496-4926-B8BD-66E841CB9322}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB96B7E1-F496-4926-B8BD-66E841CB9322}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB96B7E1-F496-4926-B8BD-66E841CB9322}.Release|ARM.ActiveCfg = Release|Any CPU
+		{EB96B7E1-F496-4926-B8BD-66E841CB9322}.Release|ARM.Build.0 = Release|Any CPU
+		{EB96B7E1-F496-4926-B8BD-66E841CB9322}.Release|x64.ActiveCfg = Release|Any CPU
+		{EB96B7E1-F496-4926-B8BD-66E841CB9322}.Release|x64.Build.0 = Release|Any CPU
+		{EB96B7E1-F496-4926-B8BD-66E841CB9322}.Release|x86.ActiveCfg = Release|Any CPU
+		{EB96B7E1-F496-4926-B8BD-66E841CB9322}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

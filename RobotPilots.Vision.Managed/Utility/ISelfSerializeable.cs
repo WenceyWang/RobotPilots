@@ -6,7 +6,7 @@ using System . Xml . Linq ;
 
 using JetBrains . Annotations ;
 
-namespace RobotPilots . Vision . Managed
+namespace RobotPilots . Vision . Managed . Utility
 {
 
 	public interface ISelfSerializeable
