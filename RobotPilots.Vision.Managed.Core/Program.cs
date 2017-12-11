@@ -13,9 +13,10 @@ namespace RobotPilots . Vision . Managed . Core
 
 		public static void Main ( string [ ] args )
 		{
-			Startup . RunAllTask ( ) . Wait ( ) ;
 			try
 			{
+				Startup . RunAllTask ( ) . Wait ( ) ;
+
 				Application application = new Application ( ) ;
 
 				application . Run ( ) ;

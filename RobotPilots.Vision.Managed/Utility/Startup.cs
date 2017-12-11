@@ -28,14 +28,14 @@ namespace RobotPilots . Vision . Managed . Utility
 			return Task . WhenAll ( tasks ) ;
 		}
 
-		/// <summary>
-		///     Point out any method should be called before using this lib
-		/// </summary>
-		[AttributeUsage ( AttributeTargets . Method , Inherited = false )]
-		public sealed class StartupAttribute : Attribute
-		{
+	}
 
-		}
+	/// <summary>
+	///     Point out any method should be called before using this lib
+	/// </summary>
+	[AttributeUsage ( AttributeTargets . Method , Inherited = false )]
+	public sealed class StartupAttribute : Attribute
+	{
 
 	}
 

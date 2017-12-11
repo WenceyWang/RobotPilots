@@ -8,14 +8,14 @@ using OpenCvSharp ;
 namespace RobotPilots . Vision . Managed . Visual
 {
 
-	public class CalibratedCamera : ICalibratedCamera
+	public class CvCalibratedCamera : ICalibratedCamera
 	{
 
 		public Mat CameraMatrix { get ; set ; }
 
 		public Mat DistortionCoefficients { get ; set ; }
 
-		public CalibratedCamera ( ICamera underlyingCamera ) { UnderlyingCamera = underlyingCamera ; }
+		public CvCalibratedCamera ( ICamera underlyingCamera ) { UnderlyingCamera = underlyingCamera ; }
 
 		public bool IsOpened => UnderlyingCamera != null ;
 

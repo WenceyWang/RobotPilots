@@ -23,7 +23,6 @@ namespace RobotPilots . Vision . Managed . Utility
 
 		public static List <ObjectType> TypeList { get ; } = new List <ObjectType> ( ) ;
 
-		private static bool Loaded { get ; set ; }
 
 		protected NeedRegisBase ( ) { Guid = Guid . NewGuid ( ) ; }
 

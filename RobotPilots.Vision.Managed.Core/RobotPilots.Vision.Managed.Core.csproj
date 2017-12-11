@@ -10,7 +10,7 @@
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="11.1.0" />
     <PackageReference Include="OpenCvSharp3-AnyCPU" Version="3.3.1.20171117" />
-    <PackageReference Include="SerialPortStreamCore" Version="2.1.0" />
+    <PackageReference Include="SerialPortStream" Version="2.1.2" />
   </ItemGroup>
 
   <ItemGroup>

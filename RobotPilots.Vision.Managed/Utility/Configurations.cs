@@ -8,7 +8,9 @@ using System . Text ;
 
 using JetBrains . Annotations ;
 
-namespace RobotPilots . Vision . Managed
+using RJCP . IO . Ports ;
+
+namespace RobotPilots . Vision . Managed . Utility
 {
 
 	[PublicAPI]
@@ -26,8 +28,32 @@ namespace RobotPilots . Vision . Managed
 
 		}
 
+		[ConfigurationItem ( ConfigurationCategory . General ,
+			nameof(DebugConsoleOutput) ,
+			"" ,
+#if DEBUG
+			true
+#else
+			false
+#endif
+		)]
+		public bool DebugConsoleOutput { get ; set ; }
+
 		[ConfigurationItem ( ConfigurationCategory . Communicate , nameof(SerialPortName) , "" , "COM1" )]
 		public string SerialPortName { get ; set ; }
+
+		[ConfigurationItem ( ConfigurationCategory . Communicate , nameof(SerialPortBaudRate) , "" , 9600 )]
+		public int SerialPortBaudRate { get ; set ; }
+
+		[ConfigurationItem ( ConfigurationCategory . Communicate , nameof(SerialPortParity) , "" , Parity . None )]
+		public Parity SerialPortParity { get ; set ; }
+
+		[ConfigurationItem ( ConfigurationCategory . Communicate , nameof(DataBits) , "" , 8 )]
+		public int DataBits { get ; set ; }
+
+		[ConfigurationItem ( ConfigurationCategory . Communicate , nameof(StopBits) , "" , StopBits . One )]
+		public StopBits StopBits { get ; set ; }
+
 
 		public string Save ( )
 		{
@@ -88,7 +114,7 @@ namespace RobotPilots . Vision . Managed
 
 			Configurations configurations = new Configurations ( ) ;
 
-			foreach ( string line in source . Split ( new [ ] { Environment . NewLine } ,
+			foreach ( string line in source . Split ( new [ ] { System . Environment . NewLine } ,
 													StringSplitOptions . RemoveEmptyEntries ) )
 			{
 				if ( ! string . IsNullOrWhiteSpace ( line ) &&

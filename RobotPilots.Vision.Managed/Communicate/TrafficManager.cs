@@ -18,7 +18,6 @@ namespace RobotPilots . Vision . Managed . Communicate
 
 		public static TrafficManager Current { get ; }
 
-
 		public ConcurrentQueue <SendDatagram> SendQueue { get ; } = new ConcurrentQueue <SendDatagram> ( ) ;
 
 		public ConcurrentQueue <ReceiveDatagram> ReceiveQueue { get ; } = new ConcurrentQueue <ReceiveDatagram> ( ) ;
@@ -30,6 +29,8 @@ namespace RobotPilots . Vision . Managed . Communicate
 		public Thread ListenThread { get ; private set ; }
 
 		public Thread SendThread { get ; private set ; }
+
+		public Thread ProcessThread { get ; private set ; }
 
 		public SerializationMode SendMode { get ; }
 
@@ -46,7 +47,7 @@ namespace RobotPilots . Vision . Managed . Communicate
 
 		public const byte PackageHeader = 0xAA ;
 
-		public const byte PackageHeaderInt = 0xAA ;
+		public const int PackageHeaderInt = 0xAA ;
 
 		public void Stop ( )
 		{
@@ -54,6 +55,7 @@ namespace RobotPilots . Vision . Managed . Communicate
 			{
 				if ( IsRunning )
 				{
+					ListenThread . Abort ( ) ;
 					IsRunning = false ;
 				}
 			}
@@ -74,6 +76,7 @@ namespace RobotPilots . Vision . Managed . Communicate
 						}
 						case SerializationMode . Binary :
 						{
+							ListenThread = new Thread ( BinaryListenTask ) ;
 							break ;
 						}
 						default :
@@ -91,6 +94,7 @@ namespace RobotPilots . Vision . Managed . Communicate
 						}
 						case SerializationMode . Binary :
 						{
+							SendThread = new Thread ( BinarySendTask ) ;
 							break ;
 						}
 						default :
@@ -99,56 +103,103 @@ namespace RobotPilots . Vision . Managed . Communicate
 						}
 					}
 
+					ProcessThread = new Thread ( ProcessTask ) ;
+
 					ListenThread . Start ( ) ;
 					SendThread . Start ( ) ;
+					ProcessThread . Start ( ) ;
 
 					IsRunning = true ;
 				}
 			}
 		}
 
-		public event EventHandler <ReceivePackageEventArgs> PackageReceived ;
+		public void ProcessTask ( )
+		{
+			while ( IsRunning )
+			{
+				if ( ReceiveQueue . TryDequeue ( out ReceiveDatagram datagram ) )
+				{
+					PackageReceived ? . Invoke ( this , new ReceivePackageEventArgs ( datagram ) ) ;
+				}
+				else
+				{
+					Thread . Sleep ( 20 ) ;
+				}
+			}
+		}
 
+		public event EventHandler <ReceivePackageEventArgs> PackageReceived ;
 
 		public void XmlListenTask ( )
 		{
-			StreamReader reader = new StreamReader ( UnderlyingStream ) ;
-
-			while ( IsRunning )
+			try
 			{
-				string package = reader . ReadLine ( ) ;
+				StreamReader reader = new StreamReader ( UnderlyingStream ) ;
 
-				XElement element = XElement . Parse ( package ) ;
-
-				if ( Datagram . Parse ( element ) is ReceiveDatagram datagram )
+				while ( IsRunning )
 				{
-					ReceiveQueue . Enqueue ( datagram ) ;
+					string package = reader . ReadLine ( ) ;
+
+					XElement element = XElement . Parse ( package ) ;
+
+					if ( Datagram . Parse ( element ) is ReceiveDatagram datagram )
+					{
+						ReceiveQueue . Enqueue ( datagram ) ;
+					}
 				}
+			}
+			catch ( ThreadAbortException )
+			{
 			}
 		}
 
 		public void BinaryListenTask ( )
 		{
-			while ( IsRunning )
+			try
 			{
-				if ( UnderlyingStream . ReadByte ( ) == PackageHeaderInt )
+				byte currentSequence = 0 ;
+				while ( IsRunning )
 				{
-					byte sequence = ( byte ) UnderlyingStream . ReadByte ( ) ;
-
-					BinaryDatagramType type = ( BinaryDatagramType ) ( byte ) UnderlyingStream . ReadByte ( ) ; //todo:if not throw
-
-					byte crc = ( byte ) UnderlyingStream . ReadByte ( ) ;
-
-					byte length = ( byte ) UnderlyingStream . ReadByte ( ) ;
-
-					byte [ ] data = new byte[ length ] ;
-
-					UnderlyingStream . Read ( data , 0 , length ) ;
-
-					if ( data . CaluCrc8 ( ) == crc )
+					if ( UnderlyingStream . ReadByte ( ) == PackageHeaderInt )
 					{
+						byte sequence = ( byte ) UnderlyingStream . ReadByte ( ) ;
+
+						if ( sequence == currentSequence )
+						{
+							currentSequence++ ;
+						}
+						else
+						{
+							//Todo:???
+						}
+
+						BinaryDatagramType type = ( BinaryDatagramType ) ( byte ) UnderlyingStream . ReadByte ( ) ; //todo:if not throw
+
+						byte crc = ( byte ) UnderlyingStream . ReadByte ( ) ;
+
+						byte length = ( byte ) UnderlyingStream . ReadByte ( ) ;
+
+						byte [ ] data = new byte[ length ] ;
+
+						UnderlyingStream . Read ( data , 0 , length ) ;
+
+						if ( data . CaluCrc8 ( ) == crc )
+						{
+							if ( Datagram . Parse ( type , data ) is ReceiveDatagram datagram )
+							{
+								ReceiveQueue . Enqueue ( datagram ) ;
+							}
+						}
+						else
+						{
+							//todo:Warning?
+						}
 					}
 				}
+			}
+			catch ( ThreadAbortException )
+			{
 			}
 		}
 
@@ -159,10 +210,6 @@ namespace RobotPilots . Vision . Managed . Communicate
 			{
 				if ( SendQueue . TryDequeue ( out SendDatagram datagram ) )
 				{
-					Thread . Sleep ( 20 ) ;
-				}
-				else
-				{
 					byte [ ] data = datagram . ToBinary ( ) ;
 
 					UnderlyingStream . WriteByte ( PackageHeader ) ;
@@ -171,6 +218,12 @@ namespace RobotPilots . Vision . Managed . Communicate
 					UnderlyingStream . WriteByte ( data . CaluCrc8 ( ) ) ;
 					UnderlyingStream . WriteByte ( Convert . ToByte ( data . Length ) ) ;
 					UnderlyingStream . Write ( data , 0 , data . Length ) ;
+
+					sequence++ ;
+				}
+				else
+				{
+					Thread . Sleep ( 20 ) ;
 				}
 			}
 		}
@@ -183,11 +236,11 @@ namespace RobotPilots . Vision . Managed . Communicate
 			{
 				if ( SendQueue . TryDequeue ( out SendDatagram datagram ) )
 				{
-					Thread . Sleep ( 20 ) ;
+					writer . WriteLine ( datagram ) ;
 				}
 				else
 				{
-					writer . WriteLine ( datagram ) ;
+					Thread . Sleep ( 20 ) ;
 				}
 			}
 		}

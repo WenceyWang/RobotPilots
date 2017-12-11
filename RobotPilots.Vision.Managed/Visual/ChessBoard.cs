@@ -60,10 +60,12 @@ namespace RobotPilots . Vision . Managed . Visual
 
 		public Mat FindFromImage ( Mat image )
 		{
-			Mat imageGray = image . CvtColor ( ColorConversionCodes . BGR2GRAY ) ;
-
-			Mat chessBoardCorners = new Mat ( ) ;
-			Cv2 . FindChessboardCorners ( imageGray , Size , chessBoardCorners ) ;
+			Mat chessBoardCorners ;
+			using ( Mat imageGray = image . CvtColor ( ColorConversionCodes . BGR2GRAY ) )
+			{
+				chessBoardCorners = new Mat ( ) ;
+				Cv2 . FindChessboardCorners ( imageGray , Size , chessBoardCorners ) ;
+			}
 
 			return chessBoardCorners ;
 		}

@@ -10,7 +10,7 @@ using OpenCvSharp ;
 
 using RobotPilots . Vision . Managed . Utility ;
 
-namespace RobotPilots . Vision . Managed . Visual
+namespace RobotPilots . Vision . Managed . Visual . Detectors
 {
 
 	public abstract class Detector : NeedRegisBase <Detector . DetectorType , Detector . DetectorAttribute , Detector>
@@ -20,7 +20,7 @@ namespace RobotPilots . Vision . Managed . Visual
 
 		public abstract List <Point2f> Detcet ( Mat frame ) ;
 
-		[Startup . StartupAttribute]
+		[Startup]
 		public void LoadDetector ( )
 		{
 			lock ( Locker )

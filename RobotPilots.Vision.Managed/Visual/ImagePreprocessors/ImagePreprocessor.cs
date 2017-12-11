@@ -9,7 +9,7 @@ using OpenCvSharp ;
 
 using RobotPilots . Vision . Managed . Utility ;
 
-namespace RobotPilots . Vision . Managed
+namespace RobotPilots . Vision . Managed . Visual . ImagePreprocessors
 {
 
 	public abstract class ImagePreprocessor : NeedRegisBase <ImagePreprocessor . ImagePreprocessorType ,
@@ -29,25 +29,6 @@ namespace RobotPilots . Vision . Managed
 
 			public ImagePreprocessorType ( [NotNull] Type entryType ) : base ( entryType ) { }
 
-		}
-
-	}
-
-
-	public sealed class CompositeImagePreprocessor : ImagePreprocessor
-	{
-
-		public List <ImagePreprocessor> ImagePreprocessors { get ; set ; } = new List <ImagePreprocessor> ( ) ;
-
-		public override Mat Process ( Mat source )
-		{
-			Mat current = source ;
-			foreach ( ImagePreprocessor imagePreprocessor in ImagePreprocessors )
-			{
-				current = imagePreprocessor . Process ( current ) ;
-			}
-
-			return current ;
 		}
 
 	}

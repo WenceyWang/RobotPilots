@@ -10,7 +10,7 @@ using OpenCvSharp ;
 using RobotPilots . Vision . Managed . Utility ;
 using RobotPilots . Vision . Managed . Visual ;
 
-namespace RobotPilots . Vision . Managed
+namespace RobotPilots . Vision . Managed . Environment
 {
 
 	public abstract class TriDimensionRebuilder : NeedRegisBase <TriDimensionRebuilder . TriDimensionRebuilderType ,
@@ -38,7 +38,7 @@ namespace RobotPilots . Vision . Managed
 	public class BinocularTriDimensionRebuilder : TriDimensionRebuilder
 	{
 
-		public BinocularCamera Camera { get ; set ; }
+		public CvBinocularCamera Camera { get ; set ; }
 
 		public override Point3f Transform ( Point2f imagePoint , CameraPosition cameraPosition )
 		{

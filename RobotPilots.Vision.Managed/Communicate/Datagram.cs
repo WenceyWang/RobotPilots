@@ -22,16 +22,16 @@ namespace RobotPilots . Vision . Managed . Communicate
 			return Create ( TypeList . Single ( type => type . XmlName == element . Name ) , element ) ;
 		}
 
-		public static Datagram Parse ( byte [ ] data )
+		public static Datagram Parse ( BinaryDatagramType type , byte [ ] data )
 		{
-			return Create ( TypeList . Single ( type => ( byte ) type . BinaryType == data [ 1 ] ) ) ;
+			return Create ( TypeList . Single ( typ => typ . BinaryType == type ) , data ) ;
 		}
 
 		public abstract byte [ ] ToBinary ( ) ;
 
 		public override string ToString ( ) { return ToXElement ( ) . ToString ( ) ; }
 
-		[Startup . StartupAttribute]
+		[Startup]
 		public static void LoadDatagram ( )
 		{
 		}

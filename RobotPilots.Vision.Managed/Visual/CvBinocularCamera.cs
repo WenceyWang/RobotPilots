@@ -8,12 +8,12 @@ using OpenCvSharp ;
 namespace RobotPilots . Vision . Managed . Visual
 {
 
-	public class BinocularCamera : IBinocularCamera
+	public class CvBinocularCamera : IBinocularCamera
 	{
 
-		public CalibratedCamera LeftCamera { get ; set ; }
+		public CvCalibratedCamera LeftCamera { get ; set ; }
 
-		public CalibratedCamera RightCamera { get ; set ; }
+		public CvCalibratedCamera RightCamera { get ; set ; }
 
 		/// <summary>
 		/// </summary>
@@ -53,10 +53,10 @@ namespace RobotPilots . Vision . Managed . Visual
 
 		public Mat RightMapY { get ; set ; }
 
-		public BinocularCamera ( ICamera leftCamera , ICamera rightCamera )
+		public CvBinocularCamera ( ICamera leftCamera , ICamera rightCamera )
 		{
-			LeftCamera = new CalibratedCamera ( leftCamera ) ;
-			RightCamera = new CalibratedCamera ( rightCamera ) ;
+			LeftCamera = new CvCalibratedCamera ( leftCamera ) ;
+			RightCamera = new CvCalibratedCamera ( rightCamera ) ;
 		}
 
 		public bool IsOpened => LeftCamera . IsOpened && RightCamera . IsOpened ;
