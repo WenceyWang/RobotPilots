@@ -21,7 +21,7 @@ namespace RobotPilots . Vision . Managed . Visual . Detectors
 		public abstract List <Point2f> Detcet ( Mat frame ) ;
 
 		[Startup]
-		public void LoadDetector ( )
+		public static void LoadDetector ( )
 		{
 			lock ( Locker )
 			{

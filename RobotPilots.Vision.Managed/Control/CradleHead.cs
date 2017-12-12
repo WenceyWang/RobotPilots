@@ -5,6 +5,7 @@ using System . Linq ;
 
 using JetBrains . Annotations ;
 
+using RobotPilots . Vision . Managed . Communicate ;
 using RobotPilots . Vision . Managed . Math ;
 
 namespace RobotPilots . Vision . Managed . Control
@@ -14,13 +15,20 @@ namespace RobotPilots . Vision . Managed . Control
 	public abstract class CradleHead
 	{
 
-		public AnglePosition Position { get ; }
+		public AnglePosition Position { get ; private set ; }
 
 		public AnglePosition MoveTarget { get ; set ; }
 
 		public abstract TimeSpan ExpectedMoveTime ( AnglePosition target ) ;
 
-		//public 
+		//Todo:??
+		public void ProcessPackage ( object caller , ReceiveDatagramEventArgs args )
+		{
+			if ( args . Datagram is CradleHeadPositionDatagram datagram )
+			{
+				Position = datagram . Position ;
+			}
+		}
 
 	}
 

@@ -2,6 +2,7 @@
 using System . Collections ;
 using System . Collections . Generic ;
 using System . Linq ;
+using System . Reflection ;
 using System . Xml . Linq ;
 
 using JetBrains . Annotations ;
@@ -14,6 +15,8 @@ namespace RobotPilots . Vision . Managed . Communicate
 	public abstract class Datagram : NeedRegisBase <Datagram . DatagramType , Datagram . DatagramAttribute , Datagram> ,
 									ISelfSerializeable
 	{
+
+		public static bool Loaded { get ; set ; }
 
 		public abstract XElement ToXElement ( ) ;
 
@@ -34,6 +37,24 @@ namespace RobotPilots . Vision . Managed . Communicate
 		[Startup]
 		public static void LoadDatagram ( )
 		{
+			lock ( Locker )
+			{
+				if ( Loaded )
+				{
+					return ;
+				}
+
+				//Todo:Load All internal type
+				foreach ( TypeInfo type in typeof ( Datagram ) . GetTypeInfo ( ) .
+																Assembly . DefinedTypes .
+																Where ( type => type . GetCustomAttributes ( typeof ( DatagramAttribute ) , false ) . Any ( )
+																				&& typeof ( Datagram ) . GetTypeInfo ( ) . IsAssignableFrom ( type ) ) )
+				{
+					RegisType ( type . AsType ( ) ) ; //Todo:resources?
+				}
+
+				Loaded = true ;
+			}
 		}
 
 		public class DatagramAttribute : NeedRegisAttributeBase
@@ -50,6 +71,7 @@ namespace RobotPilots . Vision . Managed . Communicate
 			}
 
 		}
+
 
 		public class DatagramType : RegisType <DatagramType , DatagramAttribute , Datagram>
 		{

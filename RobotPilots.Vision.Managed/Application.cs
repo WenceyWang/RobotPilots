@@ -3,9 +3,12 @@ using System . Collections ;
 using System . Collections . Generic ;
 using System . IO ;
 using System . Linq ;
+using System . Threading ;
 
 using Microsoft . Extensions . Logging ;
 
+using RobotPilots . Vision . Managed . Communicate ;
+using RobotPilots . Vision . Managed . Math ;
 using RobotPilots . Vision . Managed . Utility ;
 
 namespace RobotPilots . Vision . Managed
@@ -18,15 +21,14 @@ namespace RobotPilots . Vision . Managed
 
 		internal static ILoggerFactory LoggerFactory { get ; private set ; }
 
-		public Configurations Configuration { get ; set ; }
-
+		public static Configurations Configuration { get ; set ; }
 
 		public static Application Current { get ; private set ; }
 
 		public Application ( ) { Current = this ; }
 
 		[Startup]
-		public void StartUp ( )
+		public static void StartUp ( )
 		{
 			LoggerFactory = new LoggerFactory ( ) . AddConsole ( ) . AddDebug ( ) ;
 			Logger = LoggerFactory . CreateLogger ( typeof ( Application ) ) ;
@@ -56,6 +58,57 @@ namespace RobotPilots . Vision . Managed
 
 		public void Run ( )
 		{
+			IEnumerable <Type> moduleTypes = typeof ( Application ) . Assembly . GetTypes ( ) .
+																	Where ( type => type . GetCustomAttributes ( typeof ( ModuleAttribute ) , false ) . Any ( ) ) ;
+
+			List <IModule> modulesToPrepare =
+				moduleTypes . Select ( type => ( IModule ) Activator . CreateInstance ( type ) ) . ToList ( ) ;
+
+			List <IModule> preparedModules = new List <IModule> ( modulesToPrepare . Count ) ;
+
+			int currentCircleLoadModCount ;
+
+			do
+			{
+				currentCircleLoadModCount = 0 ;
+
+				List <IModule> canPrepareModules = modulesToPrepare . Where ( mod => mod . Dependencies . All ( dependency
+																													=> preparedModules . Any ( loadedMod =>
+																																					loadedMod . GetType ( ) . Name == dependency ) ) ) . ToList ( ) ;
+				foreach ( IModule mod in canPrepareModules )
+				{
+					currentCircleLoadModCount++ ;
+					modulesToPrepare . Remove ( mod ) ;
+
+					mod . Prepare ( Configuration ) ;
+					Logger . LogInformation ( $"Module {mod . GetType ( ) . Name} Prepared" ) ;
+
+					preparedModules . Add ( mod ) ;
+				}
+			}
+			while ( currentCircleLoadModCount != 0 ) ;
+
+			if ( modulesToPrepare . Any ( ) )
+			{
+				throw new Exception ( "Some modules failed to load" , null ) ;
+			}
+
+
+			DateTime startTime = DateTime . Now ;
+
+			while ( true )
+			{
+				Thread . Sleep ( 30 ) ;
+
+				TargetAngleDatagram target = new TargetAngleDatagram ( new AnglePosition (
+																			System . Math . Sin ( Angle . FromDegree ( ( DateTime . Now - startTime ) . TotalSeconds * 90 ) .
+																										Radius ) * 60 ,
+																			0 ) ) ;
+
+				CommunicateModule . Current . Manager . SendDatagram ( target ) ;
+			}
+
+
 			//List <VideoCapture> videoCaptures = new List <VideoCapture> ( ) ;
 
 			//for ( int device = 0 ; device < 10 ; device++ )

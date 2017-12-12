@@ -9,14 +9,16 @@ using System . Xml . Linq ;
 
 using JetBrains . Annotations ;
 
+using RobotPilots . Vision . Managed . Math ;
+
 namespace RobotPilots . Vision . Managed . Communicate
 {
 
 	[PublicAPI]
-	public class TrafficManager
+	public class CommunicateManager
 	{
 
-		public static TrafficManager Current { get ; }
+		public static CommunicateManager Current { get ; }
 
 		public ConcurrentQueue <SendDatagram> SendQueue { get ; } = new ConcurrentQueue <SendDatagram> ( ) ;
 
@@ -36,18 +38,28 @@ namespace RobotPilots . Vision . Managed . Communicate
 
 		public SerializationMode ReceiveMode { get ; }
 
-		public TrafficManager ( [NotNull] Stream underlyingStream ,
-								SerializationMode receiveMode = SerializationMode . Binary ,
-								SerializationMode sendMode = SerializationMode . Binary )
+		public CommunicateManager ( [NotNull] Stream underlyingStream ,
+									SerializationMode receiveMode = SerializationMode . Binary ,
+									SerializationMode sendMode = SerializationMode . Binary )
 		{
 			UnderlyingStream = underlyingStream ?? throw new ArgumentNullException ( nameof(underlyingStream) ) ;
 			ReceiveMode = receiveMode ;
 			SendMode = sendMode ;
 		}
 
-		public const byte PackageHeader = 0xAA ;
+		public const byte DatagramHeader = 0xAA ;
 
-		public const int PackageHeaderInt = 0xAA ;
+		public const int DatagramHeaderInt = 0xAA ;
+
+		public void SendDatagram ( [NotNull] SendDatagram datagram )
+		{
+			if ( datagram == null )
+			{
+				throw new ArgumentNullException ( nameof(datagram) ) ;
+			}
+
+			SendQueue . Enqueue ( datagram ) ;
+		}
 
 		public void Stop ( )
 		{
@@ -120,7 +132,7 @@ namespace RobotPilots . Vision . Managed . Communicate
 			{
 				if ( ReceiveQueue . TryDequeue ( out ReceiveDatagram datagram ) )
 				{
-					PackageReceived ? . Invoke ( this , new ReceivePackageEventArgs ( datagram ) ) ;
+					DatagramReceived ? . Invoke ( this , new ReceiveDatagramEventArgs ( datagram ) ) ;
 				}
 				else
 				{
@@ -129,7 +141,7 @@ namespace RobotPilots . Vision . Managed . Communicate
 			}
 		}
 
-		public event EventHandler <ReceivePackageEventArgs> PackageReceived ;
+		public event EventHandler <ReceiveDatagramEventArgs> DatagramReceived ;
 
 		public void XmlListenTask ( )
 		{
@@ -139,9 +151,9 @@ namespace RobotPilots . Vision . Managed . Communicate
 
 				while ( IsRunning )
 				{
-					string package = reader . ReadLine ( ) ;
+					string datagramString = reader . ReadLine ( ) ;
 
-					XElement element = XElement . Parse ( package ) ;
+					XElement element = XElement . Parse ( datagramString ) ;
 
 					if ( Datagram . Parse ( element ) is ReceiveDatagram datagram )
 					{
@@ -161,7 +173,7 @@ namespace RobotPilots . Vision . Managed . Communicate
 				byte currentSequence = 0 ;
 				while ( IsRunning )
 				{
-					if ( UnderlyingStream . ReadByte ( ) == PackageHeaderInt )
+					if ( UnderlyingStream . ReadByte ( ) == DatagramHeaderInt )
 					{
 						byte sequence = ( byte ) UnderlyingStream . ReadByte ( ) ;
 
@@ -212,7 +224,7 @@ namespace RobotPilots . Vision . Managed . Communicate
 				{
 					byte [ ] data = datagram . ToBinary ( ) ;
 
-					UnderlyingStream . WriteByte ( PackageHeader ) ;
+					UnderlyingStream . WriteByte ( DatagramHeader ) ;
 					UnderlyingStream . WriteByte ( sequence ) ;
 					UnderlyingStream . WriteByte ( ( byte ) datagram . Type . BinaryType ) ;
 					UnderlyingStream . WriteByte ( data . CaluCrc8 ( ) ) ;

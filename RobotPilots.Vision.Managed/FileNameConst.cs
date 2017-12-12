@@ -14,7 +14,7 @@ namespace RobotPilots . Vision . Managed
 	public static class FileNameConst
 	{
 
-		public const string SettingFile = nameof(Configurations) + ".config" ;
+		public const string SettingFile = nameof(Configurations) + ".ini" ;
 
 	}
 

@@ -18,6 +18,8 @@ namespace RobotPilots . Vision . Managed . Communicate
 
 		public AnglePosition Position { get ; }
 
+		public TargetAngleDatagram ( AnglePosition position ) { Position = position ; }
+
 		public override XElement ToXElement ( )
 		{
 			XElement result = base . ToXElement ( ) ;

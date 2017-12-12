@@ -13,18 +13,22 @@ namespace RobotPilots . Vision . Managed . Core
 
 		public static void Main ( string [ ] args )
 		{
+#if !DEBUG
 			try
 			{
-				Startup . RunAllTask ( ) . Wait ( ) ;
+#endif
+			Startup . RunAllTask ( ) . Wait ( ) ;
 
-				Application application = new Application ( ) ;
+			Application application = new Application ( ) ;
 
-				application . Run ( ) ;
-			}
+			application . Run ( ) ;
+#if !DEBUG
+		}
 			catch ( Exception e )
 			{
 				Console . WriteLine ( e ) ;
 			}
+#endif
 		}
 
 	}

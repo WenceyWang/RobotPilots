@@ -14,7 +14,6 @@ namespace RobotPilots . Vision . Managed . Communicate
 		{
 			XElement result = new XElement ( Type . XmlName ) ;
 
-
 			return result ;
 		}
 

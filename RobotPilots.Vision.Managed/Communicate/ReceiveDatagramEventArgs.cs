@@ -6,12 +6,12 @@ using System . Linq ;
 namespace RobotPilots . Vision . Managed . Communicate
 {
 
-	public class ReceivePackageEventArgs : EventArgs
+	public class ReceiveDatagramEventArgs : EventArgs
 	{
 
 		public ReceiveDatagram Datagram { get ; set ; }
 
-		public ReceivePackageEventArgs ( ReceiveDatagram datagram ) { Datagram = datagram ; }
+		public ReceiveDatagramEventArgs ( ReceiveDatagram datagram ) { Datagram = datagram ; }
 
 	}
 

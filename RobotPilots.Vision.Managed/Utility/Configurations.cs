@@ -1,6 +1,7 @@
 ﻿using System ;
 using System . Collections ;
 using System . Collections . Generic ;
+using System . ComponentModel ;
 using System . IO ;
 using System . Linq ;
 using System . Reflection ;
@@ -9,6 +10,8 @@ using System . Text ;
 using JetBrains . Annotations ;
 
 using RJCP . IO . Ports ;
+
+using RobotPilots . Vision . Managed . Communicate ;
 
 namespace RobotPilots . Vision . Managed . Utility
 {
@@ -48,19 +51,24 @@ namespace RobotPilots . Vision . Managed . Utility
 		[ConfigurationItem ( ConfigurationCategory . Communicate , nameof(SerialPortParity) , "" , Parity . None )]
 		public Parity SerialPortParity { get ; set ; }
 
-		[ConfigurationItem ( ConfigurationCategory . Communicate , nameof(DataBits) , "" , 8 )]
-		public int DataBits { get ; set ; }
+		[ConfigurationItem ( ConfigurationCategory . Communicate , nameof(SerialPortDataBits) , "" , 8 )]
+		public int SerialPortDataBits { get ; set ; }
 
-		[ConfigurationItem ( ConfigurationCategory . Communicate , nameof(StopBits) , "" , StopBits . One )]
-		public StopBits StopBits { get ; set ; }
+		[ConfigurationItem ( ConfigurationCategory . Communicate , nameof(SerialPortStopBits) , "" , StopBits . One )]
+		public StopBits SerialPortStopBits { get ; set ; }
 
+		[ConfigurationItem ( ConfigurationCategory . Communicate , nameof(SendMode) , "" , SerializationMode . Binary )]
+		public SerializationMode SendMode { get ; set ; }
+
+		[ConfigurationItem ( ConfigurationCategory . Communicate , nameof(ReceiveMode) , "" , SerializationMode . Binary )]
+		public SerializationMode ReceiveMode { get ; set ; }
 
 		public string Save ( )
 		{
 			StringBuilder [ ] stringBuilders =
 				new StringBuilder[ Enum . GetValues ( typeof ( ConfigurationCategory ) ) .
 										OfType <ConfigurationCategory> ( ) .
-										Max ( type => ( int ) type ) ] ;
+										Max ( type => ( int ) type ) + 1 ] ;
 
 			foreach ( ConfigurationCategory type in Enum . GetValues ( typeof ( ConfigurationCategory ) ) )
 			{
@@ -152,10 +160,12 @@ namespace RobotPilots . Vision . Managed . Utility
 					! line . StartsWith ( "#" ) )
 				{
 					string [ ] setCommand = line . Split ( '=' ) ;
-
 					PropertyInfo property = configurations . GetType ( ) .
-															GetProperty ( setCommand [ 0 ] . Trim ( ) , BindingFlags . IgnoreCase ) ;
-					object value = Convert . ChangeType ( setCommand [ 1 ] . Trim ( ) , property . PropertyType ) ;
+															GetProperty ( setCommand [ 0 ] . Trim ( ) ) ;
+
+					TypeConverter typeConverter = TypeDescriptor . GetConverter ( property . PropertyType ) ;
+
+					object value = typeConverter . ConvertFromString ( setCommand [ 1 ] . Trim ( ) ) ;
 
 					property . SetValue ( configurations , value ) ;
 				}
@@ -200,7 +210,7 @@ namespace RobotPilots . Vision . Managed . Utility
 				StringBuilder builder = new StringBuilder ( ) ;
 				builder . AppendLine ( $"#	{DisplayName}" ) ;
 				builder . AppendLine ( $"#	{Introduction}" ) ;
-				builder . AppendLine ( $"#	Defult Value: {Introduction}" ) ;
+				builder . AppendLine ( $"#	Defult Value: {DefultValue}" ) ;
 				return builder . ToString ( ) ;
 			}
 
