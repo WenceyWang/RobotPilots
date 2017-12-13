@@ -40,8 +40,8 @@ namespace RobotPilots . Vision . Managed . Communicate
 
 		public void Dispose ( )
 		{
-			Manager ? . UnderlyingStream ? . Close ( ) ;
 			Manager ? . Stop ( ) ;
+			Manager ? . UnderlyingStream ? . Close ( ) ;
 		}
 
 	}

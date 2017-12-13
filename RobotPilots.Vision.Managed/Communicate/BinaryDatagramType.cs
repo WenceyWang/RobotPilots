@@ -11,21 +11,31 @@ namespace RobotPilots . Vision . Managed . Communicate
 
 		//Send Package 0-127,
 
+		//Cradle Hand
+
 		TargetPosition = 0 ,
 
 		TargetAngle = 1 ,
 
 		TargetDeltaAngle = 2 ,
 
+		Fire = 3 ,
+
+		FrictionSpeed = 4 ,
+
 		//Receive Package 128-255
 
 		CradleHeadPosition = 128 ,
 
-		CradleHeadVelocity = 129 ,
+		CradleHeadTarget = 129 ,
+
+		CradleHeadVelocity = 130 ,
+
 
 		//Chassis
 
-		FrictionWheelVelocity = 130
+		FrictionWheelVelocity = 131
+
 
 		//todo:Chassis speed
 

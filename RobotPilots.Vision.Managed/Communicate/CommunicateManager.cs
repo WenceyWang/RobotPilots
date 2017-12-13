@@ -9,7 +9,10 @@ using System . Xml . Linq ;
 
 using JetBrains . Annotations ;
 
+using Microsoft . Extensions . Logging ;
+
 using RobotPilots . Vision . Managed . Math ;
+using RobotPilots . Vision . Managed . Utility ;
 
 namespace RobotPilots . Vision . Managed . Communicate
 {
@@ -17,6 +20,8 @@ namespace RobotPilots . Vision . Managed . Communicate
 	[PublicAPI]
 	public class CommunicateManager
 	{
+
+		private static ILogger Logger { get ; set ; }
 
 		public static CommunicateManager Current { get ; }
 
@@ -50,6 +55,12 @@ namespace RobotPilots . Vision . Managed . Communicate
 		public const byte DatagramHeader = 0xAA ;
 
 		public const int DatagramHeaderInt = 0xAA ;
+
+		[Startup]
+		public static void Startup ( )
+		{
+			Logger = Application . LoggerFactory . CreateLogger ( typeof ( CommunicateManager ) ) ;
+		}
 
 		public void SendDatagram ( [NotNull] SendDatagram datagram )
 		{
@@ -97,6 +108,8 @@ namespace RobotPilots . Vision . Managed . Communicate
 						}
 					}
 
+					Logger . LogInformation ( $"{ReceiveMode} Receive Opened" ) ;
+
 					switch ( SendMode )
 					{
 						case SerializationMode . Xml :
@@ -115,7 +128,13 @@ namespace RobotPilots . Vision . Managed . Communicate
 						}
 					}
 
+					Logger . LogInformation ( $"{SendMode} Send Opened" ) ;
+
+
 					ProcessThread = new Thread ( ProcessTask ) ;
+
+					Logger . LogInformation ( "Process Opened" ) ;
+
 
 					ListenThread . Start ( ) ;
 					SendThread . Start ( ) ;

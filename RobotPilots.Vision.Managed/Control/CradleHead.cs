@@ -5,6 +5,8 @@ using System . Linq ;
 
 using JetBrains . Annotations ;
 
+using OpenCvSharp ;
+
 using RobotPilots . Vision . Managed . Communicate ;
 using RobotPilots . Vision . Managed . Math ;
 
@@ -12,21 +14,45 @@ namespace RobotPilots . Vision . Managed . Control
 {
 
 	[PublicAPI]
-	public abstract class CradleHead
+	public class CradleHead
 	{
 
 		public AnglePosition Position { get ; private set ; }
 
-		public AnglePosition MoveTarget { get ; set ; }
+		public AnglePosition MoveTarget { get ; private set ; }
 
-		public abstract TimeSpan ExpectedMoveTime ( AnglePosition target ) ;
+		public void SetNewTarget ( AnglePosition target )
+		{
+			CommunicateModule . Current . Manager . SendDatagram ( new TargetAngleDatagram ( target ) ) ;
+		}
+
+		public void SetNewTarget ( Point3f target )
+		{
+			CommunicateModule . Current . Manager . SendDatagram ( new TargetPositionDatagram ( target ) ) ;
+		}
+
+		public void SetDeltaAngle ( AnglePosition targetDelta )
+		{
+			CommunicateModule . Current . Manager . SendDatagram ( new TargetDeltaAngleDatagram ( targetDelta ) ) ;
+		}
+
+		public TimeSpan ExpectedMoveTime ( AnglePosition target ) { return TimeSpan . Zero ; }
 
 		//Todo:??
 		public void ProcessPackage ( object caller , ReceiveDatagramEventArgs args )
 		{
-			if ( args . Datagram is CradleHeadPositionDatagram datagram )
+			switch ( args . Datagram )
 			{
-				Position = datagram . Position ;
+				case CradleHeadPositionDatagram cradleHeadPositionDatagram :
+				{
+					Position = cradleHeadPositionDatagram . Position ;
+					break ;
+				}
+				case CradleHeadTargetDatagram cradleHeadTargetDatagram :
+				{
+					MoveTarget = cradleHeadTargetDatagram . Target ;
+					break ;
+				}
 			}
 		}
 

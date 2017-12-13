@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="NewFolder\" />
+    <Folder Include="Dispatch\" />
     <Folder Include="Visual\Tri\" />
   </ItemGroup>
 

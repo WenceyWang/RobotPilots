@@ -13,8 +13,6 @@ namespace RobotPilots . Vision . Managed . Utility
 
 		void Prepare ( Configurations configuration ) ;
 
-		void Dispose ( ) ;
-
 	}
 
 }

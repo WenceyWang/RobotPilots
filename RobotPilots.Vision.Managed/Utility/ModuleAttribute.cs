@@ -7,7 +7,7 @@ namespace RobotPilots . Vision . Managed . Utility
 {
 
 	/// <summary>
-	///     Point out any method should be called before start
+	///     Point out any module should be prepare
 	/// </summary>
 	[AttributeUsage ( AttributeTargets . Class , Inherited = false )]
 	public sealed class ModuleAttribute : Attribute

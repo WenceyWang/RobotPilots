@@ -30,8 +30,6 @@ namespace RobotPilots . Vision . Managed . Communicate
 											BitConverter . ToSingle ( binarySource , 4 ) ) ;
 		}
 
-		public override byte [ ] ToBinary ( ) { throw new NotImplementedException ( ) ; }
-
 	}
 
 }

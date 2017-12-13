@@ -7,6 +7,8 @@ using System . Threading ;
 
 using Microsoft . Extensions . Logging ;
 
+using OpenCvSharp ;
+
 using RobotPilots . Vision . Managed . Communicate ;
 using RobotPilots . Vision . Managed . Math ;
 using RobotPilots . Vision . Managed . Utility ;
@@ -19,7 +21,8 @@ namespace RobotPilots . Vision . Managed
 
 		private static ILogger Logger { get ; set ; }
 
-		internal static ILoggerFactory LoggerFactory { get ; private set ; }
+		internal static ILoggerFactory LoggerFactory { get ; private set ; } =
+			new LoggerFactory ( ) . AddConsole ( ) . AddDebug ( ) ;
 
 		public static Configurations Configuration { get ; set ; }
 
@@ -30,7 +33,6 @@ namespace RobotPilots . Vision . Managed
 		[Startup]
 		public static void StartUp ( )
 		{
-			LoggerFactory = new LoggerFactory ( ) . AddConsole ( ) . AddDebug ( ) ;
 			Logger = LoggerFactory . CreateLogger ( typeof ( Application ) ) ;
 
 			#region Loading Setting
@@ -93,19 +95,56 @@ namespace RobotPilots . Vision . Managed
 				throw new Exception ( "Some modules failed to load" , null ) ;
 			}
 
+			Random rand = new Random ( ) ;
 
 			DateTime startTime = DateTime . Now ;
 
+			AnglePosition lastAngle = new AnglePosition ( ) ;
+
+			AnglePosition targetAngle = new AnglePosition (
+				System . Math . Sin ( Angle . FromDegree ( ( DateTime . Now - startTime ) . TotalSeconds * 120 ) .
+											Radius ) * 80 ,
+				0 ) ;
+
 			while ( true )
 			{
-				Thread . Sleep ( 30 ) ;
+				Thread . Sleep ( 20 ) ;
 
-				TargetAngleDatagram target = new TargetAngleDatagram ( new AnglePosition (
-																			System . Math . Sin ( Angle . FromDegree ( ( DateTime . Now - startTime ) . TotalSeconds * 90 ) .
-																										Radius ) * 60 ,
-																			0 ) ) ;
+				SendDatagram target = null ;
 
-				CommunicateModule . Current . Manager . SendDatagram ( target ) ;
+				lastAngle = targetAngle ;
+
+				targetAngle = new AnglePosition (
+					System . Math . Sin ( Angle . FromDegree ( ( DateTime . Now - startTime ) . TotalSeconds * 120 ) .
+												Radius ) * 80 ,
+					0 ) ;
+
+				switch ( ( BinaryDatagramType ) rand . Next ( 2 + 1 ) )
+				{
+					case BinaryDatagramType . TargetPosition :
+					{
+						target = new TargetPositionDatagram ( new Point3f (
+																( float ) System . Math . Sin ( targetAngle . XYaw . Radius ) ,
+																0 ,
+																( float ) System . Math . Cos ( targetAngle . XYaw . Radius ) ) ) ;
+						break ;
+					}
+					case BinaryDatagramType . TargetAngle :
+					{
+						target = new TargetAngleDatagram ( targetAngle ) ;
+						break ;
+					}
+					case BinaryDatagramType . TargetDeltaAngle :
+					{
+						target = new TargetDeltaAngleDatagram ( targetAngle - lastAngle ) ;
+						break ;
+					}
+				}
+
+				if ( target != null )
+				{
+					CommunicateModule . Current . Manager . SendDatagram ( target ) ;
+				}
 			}
 
 

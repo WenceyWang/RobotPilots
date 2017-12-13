@@ -20,6 +20,8 @@ namespace RobotPilots . Vision . Managed . Communicate
 
 		public sealed override XElement ToXElement ( ) { return XmlSource ; }
 
+		public sealed override byte [ ] ToBinary ( ) { return BinarySource ; }
+
 	}
 
 }
