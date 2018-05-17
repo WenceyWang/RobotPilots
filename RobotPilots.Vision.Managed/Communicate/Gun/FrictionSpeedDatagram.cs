@@ -6,12 +6,12 @@ using System . Xml . Linq ;
 
 using JetBrains . Annotations ;
 
-namespace RobotPilots . Vision . Managed . Communicate
+namespace RobotPilots . Vision . Managed . Communicate . Gun
 {
 
 	[PublicAPI]
 	[Datagram ( nameof(BinaryDatagramType . FrictionSpeed) , BinaryDatagramType . FrictionSpeed )]
-	public class FrictionSpeed : SendDatagram
+	public class FrictionSpeedDatagram : SendDatagram
 	{
 
 		public byte GunId { get ; set ; }
@@ -19,7 +19,7 @@ namespace RobotPilots . Vision . Managed . Communicate
 		public float Frequency { get ; set ; }
 
 
-		public FrictionSpeed ( byte gunId , float frequency )
+		public FrictionSpeedDatagram ( byte gunId , float frequency )
 		{
 			GunId = gunId ;
 			Frequency = frequency ;

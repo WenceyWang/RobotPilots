@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Communicate\SerialPortTransmissionStandard.pdf" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="11.1.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="2.0.0" />
@@ -16,7 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Dispatch\" />
+    <Folder Include="ThingsDetector\" />
+    <Folder Include="SupplyStation\" />
     <Folder Include="Visual\Tri\" />
   </ItemGroup>
 

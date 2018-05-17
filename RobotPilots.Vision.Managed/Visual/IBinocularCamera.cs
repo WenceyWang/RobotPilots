@@ -11,9 +11,8 @@ namespace RobotPilots . Vision . Managed . Visual
 	public interface IDepthCamera : ICamera
 	{
 
-		bool IsCalibrated { get ; }
+		Mat Read ( ) ;
 
-		(Mat color , Mat depth) Read ( ) ;
 
 	}
 

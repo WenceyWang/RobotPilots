@@ -8,7 +8,7 @@ using JetBrains . Annotations ;
 
 using OpenCvSharp ;
 
-namespace RobotPilots . Vision . Managed . Communicate
+namespace RobotPilots . Vision . Managed . Communicate . Gimbal
 {
 
 	[PublicAPI]

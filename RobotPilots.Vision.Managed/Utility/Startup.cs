@@ -11,24 +11,25 @@ namespace RobotPilots . Vision . Managed . Utility
 	public static class Startup
 	{
 
-		public static Task RunAllTask ( )
+
+		public static Task RunAllTask()
 		{
-			List <Task> tasks = new List <Task> ( ) ;
-			foreach ( TypeInfo type in typeof ( Application ) . GetTypeInfo ( ) . Assembly . DefinedTypes )
+			List<Task> tasks = new List<Task>();
+			foreach (TypeInfo type in typeof(Application).GetTypeInfo().Assembly.DefinedTypes)
 			{
-				foreach ( MethodInfo method in type . DeclaredMethods )
+				foreach (MethodInfo method in type.DeclaredMethods)
 				{
-					if ( method . GetCustomAttributes ( typeof ( StartupAttribute ) ) . Any ( ) )
+					if (method.GetCustomAttributes(typeof(StartupAttribute)).Any())
 					{
-						tasks . Add ( Task . Run ( ( ) => method . Invoke ( null , new object [ ] { } ) ) ) ;
+						tasks.Add(Task.Run(() => method.Invoke(null, new object[] { })));
 					}
 				}
 			}
-
-			return Task . WhenAll ( tasks ) ;
+			return Task.WhenAll(tasks);
 		}
 
 	}
+
 
 	/// <summary>
 	///     Point out any method should be called before using this lib

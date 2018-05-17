@@ -6,7 +6,7 @@ using System . Xml . Linq ;
 
 using JetBrains . Annotations ;
 
-namespace RobotPilots . Vision . Managed . Communicate
+namespace RobotPilots . Vision . Managed . Communicate . Gun
 {
 
 	[PublicAPI]

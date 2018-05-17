@@ -16,30 +16,12 @@ namespace RobotPilots . Vision . Managed . Visual . Detectors
 	public abstract class Detector : NeedRegisBase <Detector . DetectorType , Detector . DetectorAttribute , Detector>
 	{
 
-		private static bool Loaded { get ; set ; }
-
 		public abstract List <Point2f> Detcet ( Mat frame ) ;
 
 		[Startup]
 		public static void LoadDetector ( )
 		{
-			lock ( Locker )
-			{
-				if ( Loaded )
-				{
-					return ;
-				}
-
-				foreach ( TypeInfo type in typeof ( Application ) . GetTypeInfo ( ) .
-																	Assembly . DefinedTypes .
-																	Where ( type => type . GetCustomAttributes ( typeof ( DetectorAttribute ) , false ) . Any ( )
-																					&& typeof ( NeedRegisBase ) . GetTypeInfo ( ) . IsAssignableFrom ( type ) ) )
-				{
-					RegisType ( new DetectorType ( type . AsType ( ) ) ) ; //Todo:resources?
-				}
-
-				Loaded = true ;
-			}
+			LoadAll ( ) ;
 		}
 
 		public class DetectorAttribute : NeedRegisAttributeBase

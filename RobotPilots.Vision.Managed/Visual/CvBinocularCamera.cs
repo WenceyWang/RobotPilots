@@ -8,7 +8,7 @@ using OpenCvSharp ;
 namespace RobotPilots . Vision . Managed . Visual
 {
 
-	public class CvBinocularCamera
+	public class CvBinocularCamera:IDepthCamera
 	{
 
 		public CvCalibratedCamera LeftCamera { get ; set ; }
@@ -57,24 +57,26 @@ namespace RobotPilots . Vision . Managed . Visual
 
 		public Size FrameSize => LeftCamera . FrameSize ;
 
+		public Mat Read ( ) { return ReadDepth ( ) ; }
+
 		public CvBinocularCamera ( ICamera leftCamera , ICamera rightCamera )
 		{
 			LeftCamera = new CvCalibratedCamera ( leftCamera ) ;
 			RightCamera = new CvCalibratedCamera ( rightCamera ) ;
 		}
 
-		public Mat Read ( )
+		public Mat ReadDepth ( )
 		{
-			Mat leftFrame = LeftCamera . ReadOriginal ( ) . Remap ( LeftMapX , LeftMapY ) ;
-			Mat rightFrame = RightCamera . ReadOriginal ( ) . Remap ( RightMapX , RightMapY ) ;
+			Mat leftFrame = LeftCamera.ReadOriginal().Remap(LeftMapX, LeftMapY);
+			Mat rightFrame = RightCamera.ReadOriginal().Remap(RightMapX, RightMapY);
 
-			Mat disparity = new Mat ( ) ;
-			Stereo . Compute ( leftFrame , rightFrame , disparity ) ;
+			Mat disparity = new Mat();
+			Stereo.Compute(leftFrame, rightFrame, disparity);
 
-			Mat depth = new Mat ( ) ;
-			Cv2 . ReprojectImageTo3D ( disparity , depth , DisparityToDepthMappingMatrix ) ;
+			Mat depth = new Mat();
+			Cv2.ReprojectImageTo3D(disparity, depth, DisparityToDepthMappingMatrix);
 
-			return depth ;
+			return depth;
 		}
 
 		public void StereoCalibrateFromImages ( List <(Mat , Mat)> images , ChessBoard chessBoard )

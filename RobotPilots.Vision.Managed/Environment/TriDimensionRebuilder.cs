@@ -17,6 +17,12 @@ namespace RobotPilots . Vision . Managed . Environment
 		TriDimensionRebuilder . TriDimensionRebuilderAttribute , TriDimensionRebuilder>
 	{
 
+		[Startup]
+		public static void LoadTriDimensionRebuilder()
+		{
+			LoadAll();
+		}
+
 		public abstract Point3f Transform ( Point2f imagePoint , CameraPosition cameraPosition ) ;
 
 		public class TriDimensionRebuilderAttribute : NeedRegisAttributeBase

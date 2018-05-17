@@ -12,6 +12,8 @@ using RobotPilots . Vision . Managed . Utility ;
 namespace RobotPilots . Vision . Managed . Visual . Detectors . Test
 {
 
+	
+
 	[Detector]
 	public class ChessBoardDetector : Detector
 	{

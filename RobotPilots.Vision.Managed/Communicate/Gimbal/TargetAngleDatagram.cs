@@ -8,7 +8,7 @@ using JetBrains . Annotations ;
 
 using RobotPilots . Vision . Managed . Math ;
 
-namespace RobotPilots . Vision . Managed . Communicate
+namespace RobotPilots . Vision . Managed . Communicate . Gimbal
 {
 
 	[PublicAPI]

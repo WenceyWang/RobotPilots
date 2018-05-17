@@ -16,7 +16,6 @@ namespace RobotPilots . Vision . Managed . Communicate
 									ISelfSerializeable
 	{
 
-		public static bool Loaded { get ; set ; }
 
 		public abstract XElement ToXElement ( ) ;
 
@@ -37,24 +36,7 @@ namespace RobotPilots . Vision . Managed . Communicate
 		[Startup]
 		public static void LoadDatagram ( )
 		{
-			lock ( Locker )
-			{
-				if ( Loaded )
-				{
-					return ;
-				}
-
-				//Todo:Load All internal type
-				foreach ( TypeInfo type in typeof ( Datagram ) . GetTypeInfo ( ) .
-																Assembly . DefinedTypes .
-																Where ( type => type . GetCustomAttributes ( typeof ( DatagramAttribute ) , false ) . Any ( )
-																				&& typeof ( Datagram ) . GetTypeInfo ( ) . IsAssignableFrom ( type ) ) )
-				{
-					RegisType ( type . AsType ( ) ) ; //Todo:resources?
-				}
-
-				Loaded = true ;
-			}
+			LoadAll ( ) ;
 		}
 
 		public class DatagramAttribute : NeedRegisAttributeBase

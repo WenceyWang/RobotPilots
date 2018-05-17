@@ -8,6 +8,7 @@ using JetBrains . Annotations ;
 using OpenCvSharp ;
 
 using RobotPilots . Vision . Managed . Communicate ;
+using RobotPilots . Vision . Managed . Communicate . Gimbal ;
 using RobotPilots . Vision . Managed . Math ;
 
 namespace RobotPilots . Vision . Managed . Control
@@ -23,17 +24,17 @@ namespace RobotPilots . Vision . Managed . Control
 
 		public void SetNewTarget ( AnglePosition target )
 		{
-			CommunicateModule . Current . Manager . SendDatagram ( new TargetAngleDatagram ( target ) ) ;
+			CommunicateModule . Current . SerialManager . SendDatagram ( new TargetAngleDatagram ( target ) ) ;
 		}
 
 		public void SetNewTarget ( Point3f target )
 		{
-			CommunicateModule . Current . Manager . SendDatagram ( new TargetPositionDatagram ( target ) ) ;
+			CommunicateModule . Current . SerialManager . SendDatagram ( new TargetPositionDatagram ( target ) ) ;
 		}
 
 		public void SetDeltaAngle ( AnglePosition targetDelta )
 		{
-			CommunicateModule . Current . Manager . SendDatagram ( new TargetDeltaAngleDatagram ( targetDelta ) ) ;
+			CommunicateModule . Current . SerialManager . SendDatagram ( new TargetDeltaAngleDatagram ( targetDelta ) ) ;
 		}
 
 		public TimeSpan ExpectedMoveTime ( AnglePosition target ) { return TimeSpan . Zero ; }
@@ -43,12 +44,12 @@ namespace RobotPilots . Vision . Managed . Control
 		{
 			switch ( args . Datagram )
 			{
-				case CradleHeadPositionDatagram cradleHeadPositionDatagram :
+				case GimbalPositionDatagram cradleHeadPositionDatagram :
 				{
 					Position = cradleHeadPositionDatagram . Position ;
 					break ;
 				}
-				case CradleHeadTargetDatagram cradleHeadTargetDatagram :
+				case GimbalTargetDatagram cradleHeadTargetDatagram :
 				{
 					MoveTarget = cradleHeadTargetDatagram . Target ;
 					break ;

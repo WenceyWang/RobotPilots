@@ -27,7 +27,9 @@ namespace RobotPilots . Vision . Managed . Utility
 
 			Communicate = 1 ,
 
-			Strategy = 2
+			Strategy = 2,
+
+			Control=3,
 
 		}
 
@@ -62,6 +64,18 @@ namespace RobotPilots . Vision . Managed . Utility
 
 		[ConfigurationItem ( ConfigurationCategory . Communicate , nameof(ReceiveMode) , "" , SerializationMode . Binary )]
 		public SerializationMode ReceiveMode { get ; set ; }
+
+		[ConfigurationItem(ConfigurationCategory.Communicate,nameof(IsStatusServer),"",false)]
+		public bool IsStatusServer { get; set; }
+
+		[ConfigurationItem(ConfigurationCategory.Communicate,nameof(StatusServerHostName),"","localhost")]
+		public string StatusServerHostName { get; set; }
+
+		[ConfigurationItem(ConfigurationCategory.Communicate, nameof(StatusPort), "", "localhost")]
+		public int StatusPort { get; }
+
+		[ConfigurationItem(ConfigurationCategory.General, nameof(GunConfig), "", "<Guns><Gun Id=\"1\" Type=\"Small\" ></Guns>")]
+		public string GunConfig { get; set; }
 
 		public string Save ( )
 		{
@@ -111,34 +125,6 @@ namespace RobotPilots . Vision . Managed . Utility
 			}
 
 			return configuration ;
-		}
-
-		public static Configurations Load ( [NotNull] string source )
-		{
-			if ( source == null )
-			{
-				throw new ArgumentNullException ( nameof(source) ) ;
-			}
-
-			Configurations configurations = new Configurations ( ) ;
-
-			foreach ( string line in source . Split ( new [ ] { System . Environment . NewLine } ,
-													StringSplitOptions . RemoveEmptyEntries ) )
-			{
-				if ( ! string . IsNullOrWhiteSpace ( line ) &&
-					! line . StartsWith ( "#" ) )
-				{
-					string [ ] setCommand = line . Split ( '=' ) ;
-
-					PropertyInfo property = configurations . GetType ( ) .
-															GetProperty ( setCommand [ 0 ] . Trim ( ) , BindingFlags . IgnoreCase ) ;
-					object value = Convert . ChangeType ( setCommand [ 1 ] . Trim ( ) , property . PropertyType ) ;
-
-					property . SetValue ( configurations , value ) ;
-				}
-			}
-
-			return configurations ;
 		}
 
 		public static Configurations Load ( [NotNull] Stream stream )

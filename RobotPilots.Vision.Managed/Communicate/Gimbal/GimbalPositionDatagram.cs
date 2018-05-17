@@ -8,23 +8,23 @@ using JetBrains . Annotations ;
 
 using RobotPilots . Vision . Managed . Math ;
 
-namespace RobotPilots . Vision . Managed . Communicate
+namespace RobotPilots . Vision . Managed . Communicate . Gimbal
 {
 
 	[PublicAPI]
-	[Datagram ( nameof(BinaryDatagramType . CradleHeadPosition) , BinaryDatagramType . CradleHeadPosition )]
-	public class CradleHeadPositionDatagram : ReceiveDatagram
+	[Datagram ( nameof(BinaryDatagramType . GimbalPosition) , BinaryDatagramType . GimbalPosition )]
+	public class GimbalPositionDatagram : ReceiveDatagram
 	{
 
 		public AnglePosition Position { get ; set ; }
 
-		public CradleHeadPositionDatagram ( XElement xmlSource ) : base ( xmlSource )
+		public GimbalPositionDatagram ( XElement xmlSource ) : base ( xmlSource )
 		{
 			Position = new AnglePosition ( ReadNecessaryValue <float> ( xmlSource , nameof(Position . XYaw) ) ,
 											ReadNecessaryValue <float> ( xmlSource , nameof(Position . XYaw) ) ) ;
 		}
 
-		public CradleHeadPositionDatagram ( byte [ ] binarySource ) : base ( binarySource )
+		public GimbalPositionDatagram ( byte [ ] binarySource ) : base ( binarySource )
 		{
 			Position = new AnglePosition ( BitConverter . ToSingle ( binarySource , 0 ) ,
 											BitConverter . ToSingle ( binarySource , 4 ) ) ;

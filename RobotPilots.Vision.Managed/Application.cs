@@ -10,11 +10,23 @@ using Microsoft . Extensions . Logging ;
 using OpenCvSharp ;
 
 using RobotPilots . Vision . Managed . Communicate ;
+using RobotPilots . Vision . Managed . Communicate . Gimbal ;
 using RobotPilots . Vision . Managed . Math ;
 using RobotPilots . Vision . Managed . Utility ;
 
 namespace RobotPilots . Vision . Managed
 {
+
+	public enum ControlMode
+	{
+
+		Dafu,
+
+		Auto,
+
+		Manual
+
+	}
 
 	public class Application
 	{
@@ -42,6 +54,7 @@ namespace RobotPilots . Vision . Managed
 				FileStream settingFile = File . OpenRead ( FileNameConst . SettingFile ) ;
 				Logger . LogInformation ( "Setting file found, load it." ) ;
 				Configuration = Configurations . Load ( settingFile ) ;
+				settingFile . Close ( ) ;
 			}
 			else
 			{
@@ -143,7 +156,7 @@ namespace RobotPilots . Vision . Managed
 
 				if ( target != null )
 				{
-					CommunicateModule . Current . Manager . SendDatagram ( target ) ;
+					CommunicateModule . Current . SerialManager . SendDatagram ( target ) ;
 				}
 			}
 

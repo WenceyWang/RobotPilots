@@ -244,8 +244,32 @@ namespace RobotPilots . Vision . Managed . Utility
 			}
 		}
 
+		protected static bool Loaded { get; set; }
+
 		//Todo:
-		public static void LoadAll ( ) { }
+		public static void LoadAll ( )
+		{
+
+			lock (Locker)
+			{
+				if (Loaded)
+				{
+					return;
+				}
+
+				//Todo:Load All internal type
+				foreach (TypeInfo type in typeof(T).GetTypeInfo().
+															Assembly.DefinedTypes.
+															Where(type => type.GetCustomAttributes(typeof(TAttribute), false).Any()
+																		&& typeof(T).GetTypeInfo().IsAssignableFrom(type)))
+				{
+					RegisType(type.AsType()); //Todo:resources?
+				}
+
+				Loaded = true;
+			}
+
+		}
 
 	}
 

@@ -15,6 +15,9 @@ namespace RobotPilots . Vision . Managed . Visual
 
 		public CvCamera ( int index ) : this ( VideoCapture . FromCamera ( index ) ) { }
 
+		public CvCamera(string fileName) : this(VideoCapture.FromFile(fileName)) { }
+
+
 		public CvCamera ( VideoCapture videoCapture )
 		{
 			VideoCapture = videoCapture ?? throw new ArgumentNullException ( nameof(videoCapture) ) ;

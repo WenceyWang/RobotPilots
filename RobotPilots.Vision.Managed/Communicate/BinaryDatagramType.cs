@@ -23,23 +23,32 @@ namespace RobotPilots . Vision . Managed . Communicate
 
 		FrictionSpeed = 4 ,
 
+        PwmValue=5,
+
+		SupplyStationStatus=6,
+
+
 		//Receive Package 128-255
 
-		CradleHeadPosition = 128 ,
+		GimbalPosition = 128 ,
 
-		CradleHeadTarget = 129 ,
+		GimbalTarget = 129 ,
 
-		CradleHeadVelocity = 130 ,
+		GimbalVelocity = 130 ,
 
 
 		//Chassis
 
-		FrictionWheelVelocity = 131
+		FrictionWheelVelocity = 131,
+
 
 
 		//todo:Chassis speed
 
 		//todo: how many bullet remain
+
+
+		UpdateSupplyStationStatus=140,
 
 	}
 

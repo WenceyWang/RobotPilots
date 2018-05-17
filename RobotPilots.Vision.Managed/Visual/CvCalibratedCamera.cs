@@ -8,6 +8,8 @@ using OpenCvSharp ;
 namespace RobotPilots . Vision . Managed . Visual
 {
 
+
+
 	public class CvCalibratedCamera : ICalibratedCamera
 	{
 
@@ -56,8 +58,8 @@ namespace RobotPilots . Vision . Managed . Visual
 									FrameSize ,
 									CameraMatrix ,
 									DistortionCoefficients ,
-									out Mat [ ] rotationVectors ,
-									out Mat [ ] translationVector ) ;
+									out Mat [ ] _ ,
+									out Mat [ ] _ ) ;
 		}
 
 		public void CalibrateFromPoints ( IEnumerable <Mat> objectPointsOfFrames , IEnumerable <Mat> imagePointsOfFrames )
@@ -67,8 +69,8 @@ namespace RobotPilots . Vision . Managed . Visual
 									FrameSize ,
 									CameraMatrix ,
 									DistortionCoefficients ,
-									out Mat [ ] rotationVectors ,
-									out Mat [ ] translationVector ) ;
+									out Mat [ ] _ ,
+									out Mat [ ] _ ) ;
 		}
 
 	}

@@ -17,31 +17,12 @@ namespace RobotPilots . Vision . Managed . Visual . ImagePreprocessors
 		ImagePreprocessor . ImagePreprocessorAttribute , ImagePreprocessor>
 	{
 
-		public static bool Loaded { get ; private set ; }
-
 		public abstract Mat Process ( Mat source ) ;
 
 		[Startup]
 		public static void LoadPreprocessor ( )
 		{
-			lock ( Locker )
-			{
-				if ( Loaded )
-				{
-					return ;
-				}
-
-				//Todo:Load All internal type
-				foreach ( TypeInfo type in typeof ( ImagePreprocessor ) . GetTypeInfo ( ) .
-																		Assembly . DefinedTypes .
-																		Where ( type => type . GetCustomAttributes ( typeof ( ImagePreprocessorAttribute ) , false ) . Any ( )
-																						&& typeof ( ImagePreprocessor ) . GetTypeInfo ( ) . IsAssignableFrom ( type ) ) )
-				{
-					RegisType ( type . AsType ( ) ) ; //Todo:resources?
-				}
-
-				Loaded = true ;
-			}
+			LoadAll ( ) ;
 		}
 
 		public class ImagePreprocessorAttribute : NeedRegisAttributeBase

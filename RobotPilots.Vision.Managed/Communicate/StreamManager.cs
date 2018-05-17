@@ -18,12 +18,10 @@ namespace RobotPilots . Vision . Managed . Communicate
 {
 
 	[PublicAPI]
-	public class CommunicateManager
+	public class StreamManager
 	{
 
 		private static ILogger Logger { get ; set ; }
-
-		public static CommunicateManager Current { get ; }
 
 		public ConcurrentQueue <SendDatagram> SendQueue { get ; } = new ConcurrentQueue <SendDatagram> ( ) ;
 
@@ -43,7 +41,7 @@ namespace RobotPilots . Vision . Managed . Communicate
 
 		public SerializationMode ReceiveMode { get ; }
 
-		public CommunicateManager ( [NotNull] Stream underlyingStream ,
+		public StreamManager ( [NotNull] Stream underlyingStream ,
 									SerializationMode receiveMode = SerializationMode . Binary ,
 									SerializationMode sendMode = SerializationMode . Binary )
 		{
@@ -59,7 +57,7 @@ namespace RobotPilots . Vision . Managed . Communicate
 		[Startup]
 		public static void Startup ( )
 		{
-			Logger = Application . LoggerFactory . CreateLogger ( typeof ( CommunicateManager ) ) ;
+			Logger = Application . LoggerFactory . CreateLogger ( typeof ( StreamManager ) ) ;
 		}
 
 		public void SendDatagram ( [NotNull] SendDatagram datagram )

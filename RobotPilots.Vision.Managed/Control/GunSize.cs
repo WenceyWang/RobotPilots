@@ -6,7 +6,7 @@ using System . Linq ;
 namespace RobotPilots . Vision . Managed . Control
 {
 
-	public enum GunType
+	public enum GunSize
 	{
 
 		Small ,
